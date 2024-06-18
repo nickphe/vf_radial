@@ -1,6 +1,6 @@
 # VF RADIAL 
 
-VF RADIAL is a set of python scripts for producing phase diagrams from images of microfluidic emulsions. Made for the Fygenson Lab at UCSB.
+VF RADIAL is a set of python scripts for producing phase diagrams from images of microfluidic emulsions. Made for the Fygenson Lab at UCSB. Serves essentially the same purpose as the emulsion analysis repository, but uses a different method. 
 
 ## Usage
 Make sure you're where the script is!
