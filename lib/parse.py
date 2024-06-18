@@ -67,3 +67,17 @@ def parse(folder_path):
     number_of_images = counter
     
     return img_dict, number_of_images, sorted_folders
+
+def parse_caps_only(folder):
+    names = []
+    image_type = ".tif"
+    for file in folder:
+            file_path = os.path.join(folder, file)
+
+            if os.path.isfile(file_path) and file != ".DS_Store" and file.endswith(image_type):
+                name = file[:-len(image_type)]
+                names.append(name)
+                counter += 1
+                
+    names = sorted(names, key=extract_cap_part) #sort names within temperature folders by capillary #
+    return names

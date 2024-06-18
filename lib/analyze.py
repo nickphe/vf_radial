@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import os
-from lib.parse import parse
+from lib.parse import parse, parse_caps_only, extract_cap_number, extract_cap_part
 from lib.lever_rule import lever_rule_data, fit_lever_rule, plot_lever_rule
 from lib.capillary_data import Log
 from lib.phase_diagram import phase_diagram
@@ -54,6 +54,7 @@ def run_all_temps(settings):
 
     # match capillaries with their concentrations
     index = cap_conc_index(caps, concs, uncs)
+    #print(f"INDEX: {index}")
 
     for temp in temps:
         
@@ -61,9 +62,25 @@ def run_all_temps(settings):
         status.update(f"[light blue]{temp}")
         status.start()
         
+        # Create an index specific to a single temp folder, this allows for capillaries to drop out 
+        names = imgs[temp]
+        #print(f"IMGS: {imgs}")
+        #print(f"NAMES: {names}")
+        temp_caps = []
+        temp_concs = []
+        temp_uncs = []
+        for name in names:
+            cap_index = extract_cap_number(extract_cap_part(name))
+            #print(f"CAP_INDEX: {cap_index}")
+            temp_caps.append(cap_index)
+            temp_concs.append(index[cap_index][0])
+            temp_uncs.append(index[cap_index][1])
+        single_index = cap_conc_index(temp_caps, temp_concs, temp_uncs)
+        #print(f"SINGLE INDEX: {single_index}")
         for img in imgs[temp]:
+            
             path = get_log_path(parent, temp, img)
-            log = Log(path, index)
+            log = Log(path, single_index)
             log_li.append(log)
             
             # make histogram for each capilary

@@ -6,11 +6,10 @@ import argparse
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------
 # --- analysis settings ---
 # treat this as a table
-#4/24
 # CAPILLARIES
-caps = [2, 3, 4, 5,7,8,9]
-concs = [   6.3,   80.1, 33.7, 106.3,  60.8,  15.7, 46.7]
-uncs = [ 0.8, 4.5, 0.5, 0.7, 2.5, 0.7, 2.1]
+caps = [1,2,3,4,5,6,7,8,9]
+concs = [25.7,55.9,123.0,13.5,84.0,32.5,6.9,73.2,41.9]
+uncs = [2.1,3.1,14.0,0.5,7.5,0.8,0.5,4.2,2.3]
 # MELTING POINTS
 mp_concs = [26.9,   6.3,   80.1, 33.7, 106.3,  20.4,  60.8,  15.7, 46.7]
 mp_concs_u = [0.7, 0.8, 4.5, 0.5, 0.7, 0.74, 2.5, 0.7, 2.1]
@@ -24,8 +23,8 @@ file_extension = 'tif' # file extension of both input and output images
 export_source = 'object identities' # export image source option in ilastik
 
 # --- IO settings ---
-parent = "/Users/nanostars/Desktop/phase-diagrams/2024 02 01/Levers_DESALTEDA4"
-output_parent = "/Users/nanostars/Desktop/phase-diagrams/2024 02 01/June Analysis RI Method"
+parent = "/Users/nanostars/Desktop/test2/levers"
+output_parent = "/Users/nanostars/Desktop/test2/output"
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
