@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from scipy.odr import Model, Data, ODR
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import cm
 import scienceplots
 
 # def mode(arr, bin_count: int):
@@ -140,4 +141,38 @@ def plot_lever_rule(lever_data, fit_data, output_path):
         plt.savefig(output_path)
         plt.close()
     
-    
+def plot_multi_lever(lever_data_li, fit_data_li, output_path, temps):
+    with plt.style.context(["science","nature"]):
+        fig, ax = plt.subplots(dpi = 400)
+        c = cm.rainbow(np.linspace(0, 0.95, len(lever_data_li)))
+        
+        for i, lever_data in enumerate(lever_data_li):
+            temp = temps[i]
+            fit_data = fit_data_li[i]
+            
+            conc = lever_data["conc"]
+            conc_u = lever_data["conc_unc"]
+            vf = lever_data["vf"]
+            vf_u = lever_data["vf_unc"]
+            m = fit_data["m"][0]
+            b = fit_data["b"][0]
+            ns_den = fit_data["nsden"][0]
+            ns_dil = fit_data["nsdil"][0]
+            ns_den_uncertainty = fit_data["nsden_u"][0]
+            ns_dil_uncertainty = fit_data["nsdil_u"][0]
+
+            ax.errorbar(conc, vf, xerr = conc_u, yerr = vf_u, 
+                        marker = "o", linestyle = "", capsize = 2,
+                        color = c[i], alpha = 0.9,
+                        label = f"{temp}")
+            x = np.linspace(0, np.max(conc) + 10, 10)
+            params = np.array([m, b])
+            y = lin_model_odr(params, x)
+            ax.plot(x, y, color = c[i], alpha = 0.7)
+            ax.legend(fontsize = "xx-small")
+            ax.set_xlabel("[NS]")
+            ax.set_ylabel("$\\phi$")
+            
+        plt.savefig(output_path)
+        plt.close()
+        

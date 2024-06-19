@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 from lib.parse import parse, parse_caps_only, extract_cap_number, extract_cap_part
-from lib.lever_rule import lever_rule_data, fit_lever_rule, plot_lever_rule
+from lib.lever_rule import lever_rule_data, fit_lever_rule, plot_lever_rule, plot_multi_lever
 from lib.capillary_data import Log
 from lib.phase_diagram import phase_diagram
 from rich.status import Status
@@ -45,6 +45,7 @@ def run_all_temps(settings):
     mp_u = settings.mp_u 
     parent = settings.parent
     output_parent = settings.output_parent
+    removed_capillaries = settings.removed_capillaries
     
     create_directory(output_parent)
     imgs, img_count, temps = parse(parent) 
@@ -56,6 +57,9 @@ def run_all_temps(settings):
     index = cap_conc_index(caps, concs, uncs)
     #print(f"INDEX: {index}")
 
+    lever_data_li = []
+    fit_data_li = []
+    
     for temp in temps:
         
         log_li = []
@@ -71,17 +75,23 @@ def run_all_temps(settings):
         temp_uncs = []
         for name in names:
             cap_index = extract_cap_number(extract_cap_part(name))
+            if cap_index in removed_capillaries:
+                continue
             #print(f"CAP_INDEX: {cap_index}")
             temp_caps.append(cap_index)
             temp_concs.append(index[cap_index][0])
             temp_uncs.append(index[cap_index][1])
         single_index = cap_conc_index(temp_caps, temp_concs, temp_uncs)
         #print(f"SINGLE INDEX: {single_index}")
-        for img in imgs[temp]:
+        for k, img in enumerate(imgs[temp]):
             
             path = get_log_path(parent, temp, img)
-            log = Log(path, single_index)
-            log_li.append(log)
+            if (k + 1) in removed_capillaries:
+                print(f"cap {k+1} SKIPPED")
+                continue
+            else:
+                log = Log(path, single_index)
+                log_li.append(log)
             
             # make histogram for each capilary
             cap_output_path = f"{output_parent}/{temp}/{img}"
@@ -97,7 +107,11 @@ def run_all_temps(settings):
         lever_data, conc, vf, conc_unc, vf_unc = lever_rule_data(log_li, lr_filename, use_root_N = False)
         fit_data, dendil, dendil_u = fit_lever_rule(conc, vf, conc_unc, vf_unc, lrfit_filename)
         plot_lever_rule(lever_data, fit_data, lrplot_filename)
-
+        lever_data_li.append(lever_data)
+        fit_data_li.append(fit_data)
+        
+    multi_lrplot_filename = f"{output_parent}/multi_lever_rule.png"
+    plot_multi_lever(lever_data_li, fit_data_li, multi_lrplot_filename, temps)
     status.update(status = "making phase diagram")
     print(len(mp), len(mp_u), len(mp_concs), len(mp_concs_u))
     phase_diagram(output_parent, mp, mp_u, mp_concs, mp_concs_u)

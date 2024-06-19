@@ -17,6 +17,7 @@ class Log:
         self.vfs = (self.rden ** 3) / (self.rdil ** 3)
         
         self.cap_num = extract_cap_number(extract_cap_part(self.path))
+        
         self.conc = cap_conc_index[self.cap_num][0]
         self.conc_unc = cap_conc_index[self.cap_num][1]
         

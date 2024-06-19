@@ -7,14 +7,15 @@ import argparse
 # --- analysis settings ---
 # treat this as a table
 # CAPILLARIES
-caps = [1,2,3,4,5,6,7,8,9]
-concs = [25.7,55.9,123.0,13.5,84.0,32.5,6.9,73.2,41.9]
-uncs = [2.1,3.1,14.0,0.5,7.5,0.8,0.5,4.2,2.3]
+caps = [1, 2, 3, 4, 5, 6]
+concs = [15, 76.9, 30.6, 104.6, 5.7, 55.7]
+uncs = [0.5, 3.9, 3.0, 9.2, 0.3, 2.9]
+removed_capillaries = [1, 2]
 # MELTING POINTS
-mp_concs = [26.9,   6.3,   80.1, 33.7, 106.3,  20.4,  60.8,  15.7, 46.7]
-mp_concs_u = [0.7, 0.8, 4.5, 0.5, 0.7, 0.74, 2.5, 0.7, 2.1]
-mp = [38.1, 37.7, 36.8, 38.0, 34.3, 38.2, 36.9, 37.8, 37.0]
-mp_u = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+mp_concs = [15, 76.9, 30.6, 104.6, 5.7, 55.7, 220]
+mp_concs_u = [0.5, 3.9, 3.0, 9.2, 0.3, 2.9, 20]
+mp = [39.1, 38.7, 39.2, 37.9, 38.6, 39.1, 34.3]
+mp_u = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2]
 
 # --- ilastik settings --- 
 path_to_ilastik = '/Users/nanostars/ilastik-1.4.0.post1-OSX.app/Contents/ilastik-release/run_ilastik.sh' # path to where ilastik is stored on the computer
@@ -23,8 +24,8 @@ file_extension = 'tif' # file extension of both input and output images
 export_source = 'object identities' # export image source option in ilastik
 
 # --- IO settings ---
-parent = "/Users/nanostars/Desktop/test2/levers"
-output_parent = "/Users/nanostars/Desktop/test2/output"
+parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/levers"
+output_parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/June Output 2"
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +37,6 @@ args = parser.parse_args()
 #-i controls ilastik, -s controls segmenations, -a controls analysis
 # to run all:
 # python3 master.py -i -s -a
-
 
 class Settings:
     def __init__(self):
@@ -53,6 +53,7 @@ class Settings:
         self.ilastik_project = ilastik_project
         self.file_extension = file_extension
         self.export_source = export_source
+        self.removed_capillaries = removed_capillaries
         
 settings = Settings()
 
