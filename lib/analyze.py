@@ -46,6 +46,7 @@ def run_all_temps(settings):
     parent = settings.parent
     output_parent = settings.output_parent
     removed_capillaries = settings.removed_capillaries
+    vf_statistic = settings.vf_statistic
     
     create_directory(output_parent)
     imgs, img_count, temps = parse(parent) 
@@ -83,11 +84,12 @@ def run_all_temps(settings):
             temp_uncs.append(index[cap_index][1])
         single_index = cap_conc_index(temp_caps, temp_concs, temp_uncs)
         #print(f"SINGLE INDEX: {single_index}")
-        for k, img in enumerate(imgs[temp]):
+        for img in imgs[temp]:
             
             path = get_log_path(parent, temp, img)
-            if (k + 1) in removed_capillaries:
-                print(f"cap {k+1} SKIPPED")
+            cap_num = extract_cap_number(extract_cap_part(path))
+            if cap_num in removed_capillaries:
+                print(f"cap {cap_num} SKIPPED")
                 continue
             else:
                 log = Log(path, single_index)
@@ -104,7 +106,7 @@ def run_all_temps(settings):
         lr_filename = f"{temp_output_path}/{temp}_lever_rule_data.csv"
         lrfit_filename = f"{temp_output_path}/{temp}_lever_rule_fit_data.csv"
         lrplot_filename = f"{temp_output_path}/{temp}_lever_rule.png"
-        lever_data, conc, vf, conc_unc, vf_unc = lever_rule_data(log_li, lr_filename, use_root_N = False)
+        lever_data, conc, vf, conc_unc, vf_unc = lever_rule_data(log_li, lr_filename, vf_statistic, use_root_N = False)
         fit_data, dendil, dendil_u = fit_lever_rule(conc, vf, conc_unc, vf_unc, lrfit_filename)
         plot_lever_rule(lever_data, fit_data, lrplot_filename)
         lever_data_li.append(lever_data)

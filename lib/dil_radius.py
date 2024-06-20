@@ -56,46 +56,54 @@ class Circles:
         # update all circles by minimum distance to save a little time.
         
         start = time.time()
-         
-        distanceList = []
-        for point_1 in self.point_list:
-                for point_2 in self.point_list:
-                    if point_1 is not point_2:  
-                        distance = self.dist(point_1.loc, point_2.loc)
-                        distanceList.append(distance)
-
-        distance_array = np.array(distanceList)
-        min_distance = np.min(distance_array)
-        point_2.update_radius(min_distance)
-        point_1.update_radius(min_distance)
-        
-        with console.status("[bold green]segmenting image...") as status:
-            while total_complete_circles <= self.num_points - 1:
-
-                for point_1 in self.point_list:
+        try:
+            distanceList = []
+            for point_1 in self.point_list:
                     for point_2 in self.point_list:
-
-                        if point_1 is not point_2:       
-                                
+                        if point_1 is not point_2:  
                             distance = self.dist(point_1.loc, point_2.loc)
+                            distanceList.append(distance)
 
-                            if point_1.radius + point_2.radius <= distance:
-                                point_2.update_radius(step_size)
-                                point_1.update_radius(step_size)
-                            
-                            if point_1.radius + point_2.radius >= distance:
-                                point_1.complete_circle()
-                                point_2.complete_circle()
-                            
-                            if point_1.radius > distance:
-                                point_1.complete_circle()
-
-                            if point_2.radius > distance:
-                                point_2.complete_circle()
-        
-            end = time.time()
-            console.print(f"--> Capillary image segmented in {round(end - start, 2)} seconds.")
+            distance_array = np.array(distanceList)
+            if distance_array.size != 0: 
+                min_distance = np.min(distance_array)
+            else:
+                min_distance = 0
+            point_2.update_radius(min_distance)
+            point_1.update_radius(min_distance)
             
+            with console.status("[bold green]segmenting image...") as status:
+                while total_complete_circles <= self.num_points - 2:
+
+                    for point_1 in self.point_list:
+                        for point_2 in self.point_list:
+
+                            if point_1 is not point_2:       
+                                    
+                                distance = self.dist(point_1.loc, point_2.loc)
+
+                                if point_1.radius + point_2.radius <= distance:
+                                    point_2.update_radius(step_size)
+                                    point_1.update_radius(step_size)
+                                
+                                if point_1.radius + point_2.radius >= distance:
+                                    point_1.complete_circle()
+                                    point_2.complete_circle()
+                                
+                                if point_1.radius > distance:
+                                    point_1.complete_circle()
+
+                                if point_2.radius > distance:
+                                    point_2.complete_circle()
+            
+                end = time.time()
+                console.print(f"--> Capillary image segmented in {round(end - start, 2)} seconds.")
+        except:
+            console.print("ILASTIK segmentation likely failed. Retrain.")
+            for point in self.point_list:
+                point.update_radius(0)
+                point.complete_circle()
+                
 def dil_radii(locs):
     circles = Circles(locs)
     circles.inflate(step_size = STEPSIZE)

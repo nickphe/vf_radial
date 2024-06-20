@@ -37,8 +37,8 @@ def phase_diagram(analysis_output, mp, mp_u, mp_concs, mp_concs_u):
     with plt.style.context(["science","nature"]):
         
         fig, ax = plt.subplots(dpi = 1000)
-        ax.errorbar(den_li, temp_li, yerr = np.ones(len(den_li))*0.5, xerr = den_u_li, linestyle = "", marker = "o", capsize = 3)
-        ax.errorbar(dil_li, temp_li, yerr = np.ones(len(den_li))*0.5, xerr = dil_u_li, linestyle = "", marker = "o", capsize = 3)
+        ax.errorbar(den_li, temp_li, yerr = np.ones(len(den_li))*0.1, xerr = den_u_li, linestyle = "", marker = "o", capsize = 3)
+        ax.errorbar(dil_li, temp_li, yerr = np.ones(len(den_li))*0.1, xerr = dil_u_li, linestyle = "", marker = "o", capsize = 3)
         ax.errorbar(mp_concs, mp, yerr = mp_u, xerr = mp_concs_u, linestyle = "", marker = "o", capsize = 3)
         ax.set_xlabel("[NS]")
         ax.set_ylabel("T $^\\circ$C")

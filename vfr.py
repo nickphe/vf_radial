@@ -7,25 +7,27 @@ import argparse
 # --- analysis settings ---
 # treat this as a table
 # CAPILLARIES
-caps = [1, 2, 3, 4, 5, 6]
-concs = [15, 76.9, 30.6, 104.6, 5.7, 55.7]
-uncs = [0.5, 3.9, 3.0, 9.2, 0.3, 2.9]
-removed_capillaries = [1, 2]
+caps = [1, 2, 3, 4, 5, 6, 7]
+concs = [26.1, 6.3, 107.3, 62.5, 15.1, 50.7, 0]
+uncs = [0.7, 0.2, 7.5, 2.8, 0.8, 0.9, 0]
+removed_capillaries = [7]
 # MELTING POINTS
-mp_concs = [15, 76.9, 30.6, 104.6, 5.7, 55.7, 220]
-mp_concs_u = [0.5, 3.9, 3.0, 9.2, 0.3, 2.9, 20]
-mp = [39.1, 38.7, 39.2, 37.9, 38.6, 39.1, 34.3]
-mp_u = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.2]
+mp_concs = [26.1, 6.3, 107.3, 62.5, 15.1, 50.7]
+mp_concs_u = [0.7, 0.2, 7.5, 2.8, 0.8, 0.9]
+mp = [31.05, 30.6, 28.45, 29.0, 30.7, 30.75]
+mp_u = [.15, .2, .25, .2, .2, .15]
+# STATISTICS
+vf_statistic = "mode"
 
 # --- ilastik settings --- 
 path_to_ilastik = '/Users/nanostars/ilastik-1.4.0.post1-OSX.app/Contents/ilastik-release/run_ilastik.sh' # path to where ilastik is stored on the computer
-ilastik_project = '/Users/nanostars/Desktop/ilastik_training_May2024.ilp' # path to .ilp condensate recognition project
+ilastik_project = '/Users/nanostars/Desktop/4xMag_ilastikproj.ilp' # path to .ilp condensate recognition project
 file_extension = 'tif' # file extension of both input and output images
 export_source = 'object identities' # export image source option in ilastik
 
 # --- IO settings ---
-parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/levers"
-output_parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/June Output 2"
+parent = "/Users/nanostars/Desktop/phase-diagrams/2024 06 18/levers"
+output_parent = "/Users/nanostars/Desktop/phase-diagrams/2024 06 18/output (radial integration)"
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,6 +56,7 @@ class Settings:
         self.file_extension = file_extension
         self.export_source = export_source
         self.removed_capillaries = removed_capillaries
+        self.vf_statistic = vf_statistic 
         
 settings = Settings()
 

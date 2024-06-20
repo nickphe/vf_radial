@@ -4,6 +4,7 @@ from scipy.odr import Model, Data, ODR
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
 import scienceplots
+from scipy import stats
 
 # def mode(arr, bin_count: int):
 #     bins = np.linspace(0, 1, bin_count + 1)
@@ -25,9 +26,10 @@ import scienceplots
 
 # CURRENTLY TESTING MODE, MEAN, ETC. 
 
-def lever_rule_data(logs, output_path, use_root_N = True):
+def lever_rule_data(logs, output_path, vf_statistic, use_root_N = True):
     
     mean_vf_li = []
+    mode_vf_li = []
     std_vf_li = []
     conc_li = []
     conc_unc_li = []
@@ -44,6 +46,9 @@ def lever_rule_data(logs, output_path, use_root_N = True):
         mean_vf = np.mean(vfs)
         mean_vf_li.append(mean_vf)
         
+        mode_vf = stats.mode(vfs)[0]
+        mode_vf_li.append(mode_vf)
+        
         std_vf = np.std(vfs)
         #std_vf = np.std(vfs) / len(vfs)
         std_vf_li.append(std_vf)
@@ -56,9 +61,12 @@ def lever_rule_data(logs, output_path, use_root_N = True):
         else:
             vf_unc = std_vf
         vf_unc_li.append(vf_unc)
-        
-    lever_data = {"conc": conc_li, "conc_unc": conc_unc_li, "vf": mean_vf_li, "vf_unc": vf_unc_li, "vf_std": std_vf_li, "N (vf)": N_li}
     
+    match vf_statistic:
+        case "mean":
+            lever_data = {"conc": conc_li, "conc_unc": conc_unc_li, "vf": mean_vf_li, "vf_unc": vf_unc_li, "vf_std": std_vf_li, "N (vf)": N_li}
+        case "mode":
+            lever_data = {"conc": conc_li, "conc_unc": conc_unc_li, "vf": mode_vf_li, "vf_unc": vf_unc_li, "vf_std": std_vf_li, "N (vf)": N_li}
     lddf = pd.DataFrame(lever_data)
     lddf.to_csv(output_path)
     

@@ -52,18 +52,21 @@ def bootstrap(arr, sample_size, num_samples):
 
 def remove_outliers(arr, quantile_a, quantile_b):
     
-    if quantile_a > quantile_b:
-        print("quantile_a must be greater than quantile_b")
-    
-    a = np.copy(arr)
-    median = np.median(a)
-    qa = np.quantile(a, quantile_a)
-    qb = np.quantile(a, quantile_b)
-    iqr = qb - qa
-    
-    filt1 = a > qa
-    filt2 = a < qb
-    filt = filt1 * filt2
-    
-    outliers_removed = a[filt]
-    return(outliers_removed)
+    if arr.size != 0:
+        if quantile_a > quantile_b:
+            print("quantile_a must be greater than quantile_b")
+        
+        a = np.copy(arr)
+        median = np.median(a)
+        qa = np.quantile(a, quantile_a)
+        qb = np.quantile(a, quantile_b)
+        iqr = qb - qa
+        
+        filt1 = a > qa
+        filt2 = a < qb
+        filt = filt1 * filt2
+        
+        outliers_removed = a[filt]
+        return(outliers_removed)
+    else:
+        return np.array([0])
