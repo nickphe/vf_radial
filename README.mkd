@@ -9,16 +9,16 @@ cd /path/to/vf_radial
 ```
 Run the script with:
 ```bash
-python3 vfr.py [-h] [-i] [-s] [-a]
+python3 vfr.py [options]
 ```
 Include the flags corresponding to the options desired. 
 
 | Option      | Description |
 | ----------- | ----------- |
 | -h, --help      | display help message       |
-| -i   | run ilastik on image set        |
-| -s   | run inflation segmentation        |
-| -a   | run analysis        |
+| --ilastik   | run ilastik on image set        |
+| --segment   | run inflation segmentation        |
+| --levers    | run lever rule analysis |
 
 ## Configuration
 
@@ -81,17 +81,5 @@ output_parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/June Output 
 
 ```
 
-## Example Usage
-
-Suppose I've already implemented my desired configuration.If I just wanted to perform the ilastik object identification on an image set:
-
-```bash
-python3 vfr.py -i
-```
- If I wanted to run the segmentation and analysis, without ilastik object identification (say I'd already done it), then I would run: 
-
-```bash
-python3 vfr.py -s -a 
-```
 
 _-Nick_
