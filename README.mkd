@@ -80,6 +80,3 @@ parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/levers"
 output_parent = "/Users/nanostars/Desktop/phase-diagrams/2024 03 26/June Output 2"
 
 ```
-
-
-_-Nick_
